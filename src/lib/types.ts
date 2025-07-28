@@ -7,6 +7,7 @@ export type FieldType =
   | "checkbox" 
   | "radio" 
   | "date"
+  | "file"
 
 export interface FormField {
   id: string

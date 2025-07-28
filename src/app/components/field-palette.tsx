@@ -9,7 +9,8 @@ import {
   List, 
   CheckSquare, 
   CircleDot, 
-  Calendar 
+  Calendar,
+  Upload
 } from "lucide-react"
 import { FieldType } from "@/lib/types"
 
@@ -26,6 +27,7 @@ const fieldTypes = [
   { type: "checkbox" as FieldType, label: "Checkbox", icon: CheckSquare, description: "Multiple choice selection" },
   { type: "radio" as FieldType, label: "Radio Buttons", icon: CircleDot, description: "Single choice selection" },
   { type: "date" as FieldType, label: "Date Picker", icon: Calendar, description: "Date selection" },
+  { type: "file" as FieldType, label: "File Upload", icon: Upload, description: "File upload input" },
 ]
 
 export function FieldPalette({ onAddField }: FieldPaletteProps) {

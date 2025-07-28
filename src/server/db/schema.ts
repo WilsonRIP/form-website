@@ -6,8 +6,8 @@ export const posts = sqliteTable(
   {
     id: integer("id").primaryKey({ autoIncrement: true }),
     name: text("name").notNull(),
-    createdAt: integer("createdAt", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
-    updatedAt: integer("updatedAt", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+    createdAt: text("createdAt").notNull().$defaultFn(() => new Date().toISOString()),
+    updatedAt: text("updatedAt").notNull().$defaultFn(() => new Date().toISOString()),
   },
   (table) => [
     index("Post_name_idx").on(table.name)
@@ -20,8 +20,10 @@ export const forms = sqliteTable(
     id: integer("id").primaryKey({ autoIncrement: true }),
     title: text("title").notNull(),
     description: text("description"),
-    createdAt: integer("createdAt", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
-    updatedAt: integer("updatedAt", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+    webhookUrl: text("webhookUrl"), // Discord webhook URL
+    webhookEnabled: integer("webhookEnabled", { mode: "boolean" }).default(false), // Whether webhooks are enabled
+    createdAt: text("createdAt").notNull().$defaultFn(() => new Date().toISOString()),
+    updatedAt: text("updatedAt").notNull().$defaultFn(() => new Date().toISOString()),
   },
   (table) => [
     index("Form_title_idx").on(table.title)
@@ -39,7 +41,7 @@ export const formFields = sqliteTable(
     required: integer("required", { mode: "boolean" }).default(false),
     options: text("options"), // For select, radio, checkbox options (JSON string)
     order: integer("order").notNull(),
-    createdAt: integer("createdAt", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+    createdAt: text("createdAt").notNull().$defaultFn(() => new Date().toISOString()),
   },
   (table) => [
     index("FormField_formId_idx").on(table.formId),
@@ -53,11 +55,15 @@ export const formSubmissions = sqliteTable(
     id: integer("id").primaryKey({ autoIncrement: true }),
     formId: integer("form_id").notNull().references(() => forms.id, { onDelete: "cascade" }),
     data: text("data").notNull(), // Store form submission data (JSON string)
-    submittedAt: integer("submittedAt", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+    status: text("status").notNull().default("pending"), // pending, approved, denied
+    submittedAt: text("submittedAt").notNull().$defaultFn(() => new Date().toISOString()),
+    reviewedAt: text("reviewedAt"), // When the submission was reviewed
+    reviewNotes: text("reviewNotes"), // Notes from the reviewer
   },
   (table) => [
     index("FormSubmission_formId_idx").on(table.formId),
-    index("FormSubmission_submittedAt_idx").on(table.submittedAt)
+    index("FormSubmission_submittedAt_idx").on(table.submittedAt),
+    index("FormSubmission_status_idx").on(table.status)
   ]
 )
 

@@ -41,4 +41,34 @@ export const formApi = {
     const res = await client.form.getSubmissions.$get({ formId })
     return await res.json()
   },
+
+  // Approve submission
+  approveSubmission: async (submissionId: number, notes?: string) => {
+    const res = await client.form.approveSubmission.$post({ submissionId, notes })
+    return await res.json()
+  },
+
+  // Deny submission
+  denySubmission: async (submissionId: number, notes?: string) => {
+    const res = await client.form.denySubmission.$post({ submissionId, notes })
+    return await res.json()
+  },
+
+  // Delete submission
+  deleteSubmission: async (submissionId: number) => {
+    const res = await client.form.deleteSubmission.$post({ submissionId })
+    return await res.json()
+  },
+
+  // Update form
+  update: async (formData: any) => {
+    const res = await client.form.update.$post(formData)
+    return await res.json()
+  },
+
+  // Test webhook
+  testWebhook: async (webhookUrl: string) => {
+    const res = await client.form.testWebhook.$post({ webhookUrl })
+    return await res.json()
+  },
 } 

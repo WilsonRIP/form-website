@@ -90,6 +90,21 @@ export function FormPreview({ title, description, fields }: FormPreviewProps) {
           />
         )
       
+      case "file":
+        return (
+          <div className="w-full">
+            <input
+              type="file"
+              className="w-full bg-zinc-800/50 border border-zinc-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:cursor-pointer"
+              disabled
+              accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.gif"
+            />
+            <p className="text-xs text-gray-400 mt-1">
+              Accepted formats: PDF, DOC, DOCX, TXT, JPG, PNG, GIF (Max 10MB)
+            </p>
+          </div>
+        )
+      
       default:
         return null
     }
