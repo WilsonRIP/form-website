@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Copy, Check, X, Edit3 } from 'lucide-react'
-import { Button } from './Button'
+import Button from './Button'
 import { Form } from '@/lib/types'
 
 interface FormDuplicatorProps {
@@ -172,10 +172,10 @@ export function FormDuplicator({ form, onDuplicate, onCancel }: FormDuplicatorPr
             Cancel
           </Button>
           <Button
-            variant="primary"
+            variant="default"
             onClick={handleDuplicate}
             loading={isDuplicating}
-            icon={isDuplicating ? undefined : <Copy className="w-4 h-4" />}
+            iconLeft={isDuplicating ? undefined : <Copy className="w-4 h-4" />}
           >
             {isDuplicating ? 'Duplicating...' : 'Duplicate Form'}
           </Button>

@@ -4,6 +4,8 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import { Sparkles, X } from "lucide-react"
 import { formTemplates, FormTemplate, getAllCategories } from "@/lib/form-templates"
+import Tabs, { TabItem } from "@/components/ui/tabs"
+import { getDefaultTheme } from "@/lib/constants/themes"
 
 interface TemplateSelectorProps {
   onSelectTemplate: (template: FormTemplate) => void
@@ -11,59 +13,17 @@ interface TemplateSelectorProps {
 }
 
 export function TemplateSelector({ onSelectTemplate, onClose }: TemplateSelectorProps) {
-  const [selectedCategory, setSelectedCategory] = useState<string>("All")
   const categories = ["All", ...getAllCategories()]
+  const defaultTheme = getDefaultTheme()
 
-  const filteredTemplates = selectedCategory === "All" 
-    ? formTemplates 
-    : formTemplates.filter(template => template.category === selectedCategory)
+  // Create tab items for each category
+  const tabItems: TabItem[] = categories.map(category => {
+    const filteredTemplates = category === "All" 
+      ? formTemplates 
+      : formTemplates.filter(template => template.category === category)
 
-  return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-      <motion.div
-        className="bg-zinc-900/90 backdrop-blur-sm border border-zinc-800 rounded-xl p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto"
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.9 }}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center space-x-3">
-            <div className="p-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg">
-              <Sparkles className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h3 className="text-white text-xl font-semibold">Choose a Template</h3>
-              <p className="text-gray-400 text-sm">Start with a pre-built form template</p>
-            </div>
-          </div>
-          <button
-            onClick={onClose}
-            className="p-2 text-gray-400 hover:text-white hover:bg-zinc-800/50 rounded-lg transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-
-        {/* Category Filter */}
-        <div className="mb-6">
-          <div className="flex flex-wrap gap-2">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  selectedCategory === category
-                    ? "bg-purple-600 text-white"
-                    : "bg-zinc-800 text-gray-300 hover:bg-zinc-700"
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-        </div>
-
+    const templatesContent = (
+      <div className="space-y-4">
         {/* Templates Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredTemplates.map((template) => (
@@ -128,6 +88,47 @@ export function TemplateSelector({ onSelectTemplate, onClose }: TemplateSelector
             <p className="text-gray-500">Try selecting a different category</p>
           </div>
         )}
+      </div>
+    )
+
+    return {
+      id: category,
+      name: category,
+      content: templatesContent
+    }
+  })
+
+  return (
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+      <motion.div
+        className="bg-zinc-900/90 backdrop-blur-sm border border-zinc-800 rounded-xl p-6 max-w-6xl w-full mx-4 max-h-[90vh] overflow-y-auto"
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.9 }}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-3">
+            <div className="p-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg">
+              <Sparkles className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h3 className="text-white text-xl font-semibold">Choose a Template</h3>
+              <p className="text-gray-400 text-sm">Start with a pre-built form template</p>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-2 text-gray-400 hover:text-white hover:bg-zinc-800/50 rounded-lg transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Tabs Component */}
+        <div className="mb-6">
+          <Tabs items={tabItems} className="w-full" theme={defaultTheme} />
+        </div>
 
         {/* Footer */}
         <div className="mt-6 pt-6 border-t border-zinc-700">

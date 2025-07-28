@@ -1,11 +1,12 @@
 import type { Metadata } from "next"
 import { Providers } from "./components/providers"
+import { Navbar } from "@/components/layout/Navbar"
 
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "JStack App",
-  description: "Created using JStack",
+  title: "FormBuilder - Create Beautiful Forms",
+  description: "Create beautiful forms with drag-and-drop ease",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 }
 
@@ -17,7 +18,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased">
-        <Providers>{children}</Providers>
+        <Providers>
+          <Navbar />
+          <main className="pt-16">
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   )

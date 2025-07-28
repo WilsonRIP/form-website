@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Palette, Check } from 'lucide-react'
 import { FORM_THEMES, FormTheme } from '@/lib/constants/themes'
-import { Button } from './Button'
+import Button from './Button'
 
 interface ThemeSelectorProps {
   selectedTheme: string
@@ -22,7 +22,7 @@ export function ThemeSelector({ selectedTheme, onThemeChange, className }: Theme
       <Button
         variant="outline"
         onClick={() => setIsOpen(!isOpen)}
-        icon={<Palette className="w-4 h-4" />}
+        iconLeft={<Palette className="w-4 h-4" />}
         className="w-full justify-between"
       >
         <span>Theme: {currentTheme.name}</span>

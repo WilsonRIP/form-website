@@ -12,7 +12,7 @@ import {
   Filter,
   X
 } from 'lucide-react'
-import { Button } from './Button'
+import Button from './Button'
 import { FormSubmission } from '@/lib/types'
 
 interface AdvancedExportProps {
@@ -314,10 +314,10 @@ export function AdvancedExport({
             Cancel
           </Button>
           <Button
-            variant="primary"
+            variant="default"
             onClick={handleExport}
             loading={isExporting}
-            icon={isExporting ? undefined : <Download className="w-4 h-4" />}
+            iconLeft={isExporting ? undefined : <Download className="w-4 h-4" />}
           >
             {isExporting ? 'Exporting...' : 'Export Data'}
           </Button>

@@ -67,8 +67,8 @@ export function validateFormField(field: FormField, index: number): ValidationEr
     })
   }
 
-  // Validate options for select, checkbox, and radio fields
-  if (['select', 'checkbox', 'radio'].includes(field.type) && field.options) {
+  // Validate options for select, multiselect, checkbox, and radio fields
+  if (['select', 'multiselect', 'checkbox', 'radio'].includes(field.type) && field.options) {
     if (field.options.length === 0) {
       errors.push({ 
         field: `fields[${index}].options`, 
@@ -206,7 +206,7 @@ export function formatValidationErrors(errors: ValidationError[]): Record<string
 
 // Field type validation
 export function isValidFieldType(type: string): type is string {
-  return ['text', 'textarea', 'email', 'number', 'select', 'checkbox', 'radio', 'date', 'file'].includes(type)
+  return ['text', 'textarea', 'email', 'number', 'select', 'multiselect', 'checkbox', 'radio', 'date', 'file'].includes(type)
 }
 
 // Form submission validation

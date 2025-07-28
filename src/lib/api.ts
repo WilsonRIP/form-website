@@ -17,8 +17,11 @@ export const formApi = {
   create: async (data: {
     title: string
     description?: string
+    webhookUrl?: string
+    webhookEnabled: boolean
+    userId?: number
     fields: Array<{
-      type: "text" | "textarea" | "email" | "number" | "select" | "checkbox" | "radio" | "date"
+      type: "text" | "textarea" | "email" | "number" | "select" | "multiselect" | "checkbox" | "radio" | "date"
       label: string
       placeholder?: string
       required: boolean
@@ -61,7 +64,22 @@ export const formApi = {
   },
 
   // Update form
-  update: async (formData: any) => {
+  update: async (formData: {
+    id: number
+    title: string
+    description?: string
+    webhookUrl?: string
+    webhookEnabled: boolean
+    userId?: number
+    fields: Array<{
+      type: "text" | "textarea" | "email" | "number" | "select" | "multiselect" | "checkbox" | "radio" | "date"
+      label: string
+      placeholder?: string
+      required: boolean
+      options?: string[]
+      order: number
+    }>
+  }) => {
     const res = await client.form.update.$post(formData)
     return await res.json()
   },

@@ -4,6 +4,7 @@ export type FieldType =
   | "email" 
   | "number" 
   | "select" 
+  | "multiselect"
   | "checkbox" 
   | "radio" 
   | "date"

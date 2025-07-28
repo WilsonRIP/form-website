@@ -11,7 +11,7 @@ import {
   Maximize,
   Minimize
 } from 'lucide-react'
-import { Button } from './Button'
+import Button from './Button'
 import { FormField } from '@/lib/types'
 
 interface FormPreviewProps {
@@ -112,6 +112,29 @@ export function FormPreview({
               <option key={index} value={option}>{option}</option>
             ))}
           </select>
+        )
+      
+      case 'multiselect':
+        return (
+          <div key={field.id} className="w-full">
+            <div className="flex flex-wrap gap-1 mb-2">
+              <span className="text-sm text-gray-400 px-2 py-1 bg-zinc-700/50 rounded">
+                {field.placeholder || 'Select multiple options'}
+              </span>
+            </div>
+            <div className="space-y-2">
+              {field.options?.map((option, index) => (
+                <label key={index} className="flex items-center space-x-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4 text-blue-500 bg-zinc-700 border-zinc-600 rounded focus:ring-blue-500 focus:ring-2"
+                    disabled
+                  />
+                  <span className="text-white">{option}</span>
+                </label>
+              ))}
+            </div>
+          </div>
         )
       
       case 'checkbox':
@@ -277,7 +300,7 @@ export function FormPreview({
               variant="outline"
               size="sm"
               onClick={() => setIsFullscreen(!isFullscreen)}
-              icon={isFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
+              iconLeft={isFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
             >
               {isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
             </Button>
@@ -285,7 +308,7 @@ export function FormPreview({
               variant="outline"
               size="sm"
               onClick={() => window.location.reload()}
-              icon={<RotateCcw className="w-4 h-4" />}
+              iconLeft={<RotateCcw className="w-4 h-4" />}
             >
               Refresh
             </Button>
@@ -339,7 +362,7 @@ export function FormPreview({
 
                   {/* Submit Button */}
                   <Button
-                    variant="primary"
+                    variant="default"
                     className="w-full"
                     disabled
                   >

@@ -1,6 +1,6 @@
 // UI Components exports
 
-export { Button } from './Button'
+export { default as Button } from './Button'
 export { Toast, ToastContainer } from './Toast'
 export { ErrorBoundary } from './ErrorBoundary'
 export { ThemeSelector } from './ThemeSelector'

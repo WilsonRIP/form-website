@@ -17,6 +17,7 @@ import {
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import { useMutation } from "@tanstack/react-query"
 import { Undo, Redo } from "lucide-react"
+import Button from "@/components/ui/Button"
 import { FieldPalette } from "./field-palette"
 import { FormPreview } from "./form-preview"
 import { FieldEditor } from "./field-editor"
@@ -27,6 +28,7 @@ import { TemplateSelector } from "./template-selector"
 import { FormField, FieldType } from "@/lib/types"
 import { formApi } from "@/lib/api"
 import { useUndoRedo } from "@/lib/hooks/useUndoRedo"
+import { useAuth } from "@/lib/contexts/AuthContext"
 
 interface FormBuilderProps {
   initialForm?: any
@@ -34,6 +36,7 @@ interface FormBuilderProps {
 }
 
 export function FormBuilder({ initialForm, isEditing = false }: FormBuilderProps) {
+  const { user } = useAuth()
   const [fields, setFields] = useState<FormField[]>(() => {
     if (initialForm?.fields) {
       return initialForm.fields.map((field: any) => ({
@@ -168,7 +171,7 @@ export function FormBuilder({ initialForm, isEditing = false }: FormBuilderProps
       label: `New ${type} field`,
       placeholder: "",
       required: false,
-      options: type === "select" || type === "radio" || type === "checkbox" ? ["Option 1", "Option 2"] : undefined,
+      options: type === "select" || type === "multiselect" || type === "radio" || type === "checkbox" ? ["Option 1", "Option 2"] : undefined,
       order: fields.length
     }
     setFields([...fields, newField])
@@ -208,7 +211,7 @@ export function FormBuilder({ initialForm, isEditing = false }: FormBuilderProps
       const supportedFields = fields.filter(field => 
         field.type !== "file"
       ).map((field, index) => ({
-        type: field.type as "text" | "textarea" | "email" | "number" | "select" | "checkbox" | "radio" | "date",
+        type: field.type as "text" | "textarea" | "email" | "number" | "select" | "multiselect" | "checkbox" | "radio" | "date",
         label: field.label,
         placeholder: field.placeholder || "",
         required: field.required,
@@ -221,6 +224,7 @@ export function FormBuilder({ initialForm, isEditing = false }: FormBuilderProps
         description: formDescription,
         webhookUrl: webhookUrl || undefined,
         webhookEnabled: webhookEnabled,
+        userId: user ? parseInt(user.id) : undefined,
         fields: supportedFields
       }
 
@@ -257,13 +261,13 @@ export function FormBuilder({ initialForm, isEditing = false }: FormBuilderProps
         {/* Field Palette */}
         <div className="lg:col-span-3">
           <div className="mb-4">
-            <button
+            <Button
               onClick={() => setShowTemplateSelector(true)}
-              className="w-full mb-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold py-3 px-4 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2"
+              className="w-full mb-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+              iconLeft={<span>✨</span>}
             >
-              <span>✨</span>
-              <span>Use Template</span>
-            </button>
+              Use Template
+            </Button>
           </div>
           <FieldPalette onAddField={addField} />
         </div>
@@ -279,24 +283,26 @@ export function FormBuilder({ initialForm, isEditing = false }: FormBuilderProps
             {/* Undo/Redo Controls */}
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-2">
-                <button
+                <Button
                   onClick={handleUndo}
                   disabled={!canUndo}
-                  className="p-2 text-gray-400 hover:text-white hover:bg-zinc-800/50 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-1"
+                  variant="ghost"
+                  size="sm"
+                  iconLeft={<Undo className="w-4 h-4" />}
                   title="Undo (Ctrl+Z)"
                 >
-                  <Undo className="w-4 h-4" />
-                  <span className="text-sm">Undo</span>
-                </button>
-                <button
+                  Undo
+                </Button>
+                <Button
                   onClick={handleRedo}
                   disabled={!canRedo}
-                  className="p-2 text-gray-400 hover:text-white hover:bg-zinc-800/50 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-1"
+                  variant="ghost"
+                  size="sm"
+                  iconLeft={<Redo className="w-4 h-4" />}
                   title="Redo (Ctrl+Y)"
                 >
-                  <Redo className="w-4 h-4" />
-                  <span className="text-sm">Redo</span>
-                </button>
+                  Redo
+                </Button>
               </div>
               <div className="text-xs text-gray-500">
                 Use Ctrl+Z to undo, Ctrl+Y to redo
@@ -399,15 +405,14 @@ export function FormBuilder({ initialForm, isEditing = false }: FormBuilderProps
           />
 
           {/* Save Button */}
-          <motion.button
+          <Button
             onClick={saveForm}
             disabled={isSaving}
-            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
-            whileHover={{ scale: isSaving ? 1 : 1.02 }}
-            whileTap={{ scale: isSaving ? 1 : 0.98 }}
+            loading={isSaving}
+            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
           >
             {isSaving ? "Saving..." : "Save Form"}
-          </motion.button>
+          </Button>
         </div>
       </div>
 

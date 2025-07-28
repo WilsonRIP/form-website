@@ -12,7 +12,7 @@ import {
   ChevronRight,
   X
 } from 'lucide-react'
-import { Button } from './Button'
+import Button from './Button'
 import { FormField } from '@/lib/types'
 
 interface Condition {
@@ -148,7 +148,7 @@ export function ConditionalLogic({
         <Button
           variant="outline"
           onClick={addCondition}
-          icon={<Plus className="w-4 h-4" />}
+          iconLeft={<Plus className="w-4 h-4" />}
           className="w-full"
         >
           Add Condition

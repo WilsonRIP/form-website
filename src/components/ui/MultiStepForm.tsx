@@ -11,7 +11,7 @@ import {
   Eye,
   Check
 } from 'lucide-react'
-import { Button } from './Button'
+import Button from './Button'
 import { FormField } from '@/lib/types'
 
 interface FormStep {
@@ -68,17 +68,17 @@ export function MultiStepForm({
             variant="outline"
             size="sm"
             onClick={() => setIsEditing(!isEditing)}
-            icon={isEditing ? <Eye className="w-4 h-4" /> : <Edit3 className="w-4 h-4" />}
+            iconLeft={isEditing ? <Eye className="w-4 h-4" /> : <Edit3 className="w-4 h-4" />}
           >
             {isEditing ? 'Preview' : 'Edit'}
           </Button>
         </div>
         
         <Button
-          variant="primary"
+          variant="default"
           size="sm"
           onClick={onStepAdd}
-          icon={<Plus className="w-4 h-4" />}
+          iconLeft={<Plus className="w-4 h-4" />}
         >
           Add Step
         </Button>
@@ -147,7 +147,7 @@ export function MultiStepForm({
           variant="outline"
           onClick={() => onStepChange(Math.max(0, currentStep - 1))}
           disabled={currentStep === 0}
-          icon={<ChevronLeft className="w-4 h-4" />}
+          iconLeft={<ChevronLeft className="w-4 h-4" />}
         >
           Previous
         </Button>
@@ -157,10 +157,10 @@ export function MultiStepForm({
         </div>
 
         <Button
-          variant="primary"
+          variant="default"
           onClick={() => onStepChange(Math.min(steps.length - 1, currentStep + 1))}
           disabled={currentStep === steps.length - 1}
-          icon={<ChevronRight className="w-4 h-4" />}
+          iconLeft={<ChevronRight className="w-4 h-4" />}
         >
           Next
         </Button>
@@ -192,10 +192,10 @@ function StepEditor({
         <h4 className="text-white text-lg font-semibold">Step {stepIndex + 1}</h4>
         {canDelete && (
           <Button
-            variant="danger"
+            variant="destructive"
             size="sm"
             onClick={onDelete}
-            icon={<Trash2 className="w-4 h-4" />}
+            iconLeft={<Trash2 className="w-4 h-4" />}
           >
             Delete Step
           </Button>

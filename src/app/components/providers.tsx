@@ -7,6 +7,7 @@ import {
 } from "@tanstack/react-query"
 import { HTTPException } from "hono/http-exception"
 import { PropsWithChildren, useState } from "react"
+import { AuthProvider } from "@/lib/contexts/AuthContext"
 
 export const Providers = ({ children }: PropsWithChildren) => {
   const [queryClient] = useState(
@@ -23,6 +24,10 @@ export const Providers = ({ children }: PropsWithChildren) => {
   )
 
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        {children}
+      </AuthProvider>
+    </QueryClientProvider>
   )
 }

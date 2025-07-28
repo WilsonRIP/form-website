@@ -30,7 +30,7 @@ export function FieldEditor({ field, onUpdate, onDelete }: FieldEditorProps) {
     }
   }
 
-  const needsOptions = field.type === "select" || field.type === "radio" || field.type === "checkbox"
+  const needsOptions = field.type === "select" || field.type === "multiselect" || field.type === "radio" || field.type === "checkbox"
 
   return (
     <motion.div 

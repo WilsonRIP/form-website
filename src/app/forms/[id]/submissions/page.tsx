@@ -8,6 +8,7 @@ import { ArrowLeft, Users, Calendar, FileText, CheckCircle, XCircle, MessageSqua
 import { ExportSubmissions } from "@/app/components/export-submissions"
 import Link from "next/link"
 import { formApi } from "@/lib/api"
+import { FormField } from "@/lib/types"
 
 export default function FormSubmissionsPage() {
   const params = useParams()
@@ -134,7 +135,7 @@ export default function FormSubmissionsPage() {
           <ExportSubmissions
             submissions={submissions || []}
             fields={form.fields || []}
-            formTitle={form.title}
+            formTitle={form.title || ''}
           />
         </div>
 
@@ -191,7 +192,7 @@ export default function FormSubmissionsPage() {
               <div>
                 <p className="text-gray-400 text-sm">Created</p>
                 <p className="text-white text-sm">
-                  {new Date(form.createdAt).toLocaleDateString()}
+                  {new Date(form.createdAt || '').toLocaleDateString()}
                 </p>
               </div>
             </div>

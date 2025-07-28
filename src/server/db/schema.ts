@@ -1,6 +1,22 @@
 import { sqliteTable, integer, text, index } from "drizzle-orm/sqlite-core"
 import { relations } from "drizzle-orm"
 
+export const users = sqliteTable(
+  "users",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    name: text("name").notNull(),
+    email: text("email").notNull().unique(),
+    password: text("password").notNull(), // Hashed password
+    avatar: text("avatar"), // Optional avatar URL
+    createdAt: text("createdAt").notNull().$defaultFn(() => new Date().toISOString()),
+    updatedAt: text("updatedAt").notNull().$defaultFn(() => new Date().toISOString()),
+  },
+  (table) => [
+    index("User_email_idx").on(table.email)
+  ]
+)
+
 export const posts = sqliteTable(
   "posts",
   {
@@ -18,6 +34,7 @@ export const forms = sqliteTable(
   "forms",
   {
     id: integer("id").primaryKey({ autoIncrement: true }),
+    userId: integer("user_id").references(() => users.id, { onDelete: "cascade" }), // Link forms to users
     title: text("title").notNull(),
     description: text("description"),
     webhookUrl: text("webhookUrl"), // Discord webhook URL
@@ -26,7 +43,8 @@ export const forms = sqliteTable(
     updatedAt: text("updatedAt").notNull().$defaultFn(() => new Date().toISOString()),
   },
   (table) => [
-    index("Form_title_idx").on(table.title)
+    index("Form_title_idx").on(table.title),
+    index("Form_userId_idx").on(table.userId)
   ]
 )
 
@@ -68,7 +86,15 @@ export const formSubmissions = sqliteTable(
 )
 
 // Relations
-export const formsRelations = relations(forms, ({ many }) => ({
+export const usersRelations = relations(users, ({ many }) => ({
+  forms: many(forms),
+}))
+
+export const formsRelations = relations(forms, ({ one, many }) => ({
+  user: one(users, {
+    fields: [forms.userId],
+    references: [users.id],
+  }),
   fields: many(formFields),
   submissions: many(formSubmissions),
 }))

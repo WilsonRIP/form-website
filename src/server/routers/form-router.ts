@@ -36,8 +36,9 @@ export const formRouter = j.router({
       description: z.string().optional(),
       webhookUrl: z.string().optional(),
       webhookEnabled: z.boolean().default(false),
+      userId: z.number().optional(), // Optional for backward compatibility
       fields: z.array(z.object({
-        type: z.enum(["text", "textarea", "email", "number", "select", "checkbox", "radio", "date"]),
+        type: z.enum(["text", "textarea", "email", "number", "select", "multiselect", "checkbox", "radio", "date"]),
         label: z.string().min(1, "Label is required"),
         placeholder: z.string().optional(),
         required: z.boolean().default(false),
@@ -47,14 +48,15 @@ export const formRouter = j.router({
     }))
     .mutation(async ({ c, ctx, input }) => {
       const { db } = ctx
-      const { title, description, webhookUrl, webhookEnabled, fields } = input
+      const { title, description, webhookUrl, webhookEnabled, userId, fields } = input
 
       // Create form
       const [newForm] = await db.insert(forms).values({
         title,
         description: description || null,
         webhookUrl: webhookUrl || null,
-        webhookEnabled: webhookEnabled || false
+        webhookEnabled: webhookEnabled || false,
+        userId: userId || null
       }).returning()
 
       if (!newForm) {
@@ -88,7 +90,7 @@ export const formRouter = j.router({
       webhookUrl: z.string().optional(),
       webhookEnabled: z.boolean().default(false),
       fields: z.array(z.object({
-        type: z.enum(["text", "textarea", "email", "number", "select", "checkbox", "radio", "date"]),
+        type: z.enum(["text", "textarea", "email", "number", "select", "multiselect", "checkbox", "radio", "date"]),
         label: z.string().min(1, "Label is required"),
         placeholder: z.string().optional(),
         required: z.boolean().default(false),

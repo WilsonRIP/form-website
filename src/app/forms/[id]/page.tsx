@@ -137,6 +137,30 @@ export default function FormViewerPage() {
           </select>
         )
       
+      case "multiselect":
+        return (
+          <div className="space-y-2">
+            {field.options ? JSON.parse(field.options).map((option: string, index: number) => (
+              <label key={index} className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={formData[field.label]?.includes?.(option) || false}
+                  onChange={(e) => {
+                    const currentValues = formData[field.label] || []
+                    const newValues = e.target.checked
+                      ? [...currentValues, option]
+                      : currentValues.filter((v: string) => v !== option)
+                    handleInputChange(field.label, newValues)
+                  }}
+                  className="w-4 h-4 text-blue-600 bg-zinc-800 border-zinc-700 rounded focus:ring-blue-500 focus:ring-2"
+                  required={field.required}
+                />
+                <span className="text-white">{option}</span>
+              </label>
+            )) : null}
+          </div>
+        )
+      
       case "checkbox":
         return (
           <div className="space-y-2">

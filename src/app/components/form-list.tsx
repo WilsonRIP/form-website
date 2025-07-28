@@ -5,6 +5,7 @@ import { motion } from "framer-motion"
 import { Calendar, FileText, Users, Eye, Edit, Trash2, Plus } from "lucide-react"
 import { formApi } from "@/lib/api"
 import Link from "next/link"
+import Button from "@/components/ui/Button"
 
 export function FormList() {
   const { data: forms, isLoading, error } = useQuery({
@@ -33,14 +34,12 @@ export function FormList() {
       {/* Create New Form Button */}
       <div className="flex justify-end">
         <Link href="/">
-          <motion.button
-            className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+          <Button
+            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+            iconLeft={<Plus className="w-5 h-5" />}
           >
-            <Plus className="w-5 h-5" />
-            <span>Create New Form</span>
-          </motion.button>
+            Create New Form
+          </Button>
         </Link>
       </div>
 
@@ -74,24 +73,24 @@ export function FormList() {
               <div className="flex items-center justify-between">
                 <div className="flex space-x-2">
                   <Link href={`/forms/${form.id}`}>
-                    <button className="p-2 text-blue-400 hover:text-blue-300 hover:bg-blue-500/10 rounded-lg transition-colors">
+                    <Button variant="ghost" size="sm" className="p-2 text-blue-400 hover:text-blue-300 hover:bg-blue-500/10">
                       <Eye className="w-4 h-4" />
-                    </button>
+                    </Button>
                   </Link>
                   <Link href={`/forms/${form.id}/edit`}>
-                    <button className="p-2 text-green-400 hover:text-green-300 hover:bg-green-500/10 rounded-lg transition-colors">
+                    <Button variant="ghost" size="sm" className="p-2 text-green-400 hover:text-green-300 hover:bg-green-500/10">
                       <Edit className="w-4 h-4" />
-                    </button>
+                    </Button>
                   </Link>
                   <Link href={`/forms/${form.id}/submissions`}>
-                    <button className="p-2 text-purple-400 hover:text-purple-300 hover:bg-purple-500/10 rounded-lg transition-colors">
+                    <Button variant="ghost" size="sm" className="p-2 text-purple-400 hover:text-purple-300 hover:bg-purple-500/10">
                       <Users className="w-4 h-4" />
-                    </button>
+                    </Button>
                   </Link>
                 </div>
-                <button className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors">
+                <Button variant="ghost" size="sm" className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10">
                   <Trash2 className="w-4 h-4" />
-                </button>
+                </Button>
               </div>
             </motion.div>
           ))
@@ -103,13 +102,11 @@ export function FormList() {
               <p className="text-sm mt-2">Create your first form to get started</p>
             </div>
             <Link href="/">
-              <motion.button
-                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+              <Button
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
               >
                 Create Your First Form
-              </motion.button>
+              </Button>
             </Link>
           </div>
         )}
